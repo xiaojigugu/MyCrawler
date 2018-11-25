@@ -8,13 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mycrawler.R;
 import com.example.mycrawler.data.BeanBookContent;
-import com.example.mycrawler.util.BatteryView;
 import com.example.mycrawler.util.BiqugeUrl;
 import com.example.mycrawler.util.BookContentAdapter;
 import com.example.mycrawler.util.okhttp.BaseCallback;
@@ -22,10 +20,8 @@ import com.example.mycrawler.util.okhttp.OkHttpHelper;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +49,7 @@ public class ReadActivity extends AppCompatActivity {
     private int firstEnterId, bottomId, topId;//初始进入阅读页面的章节ID，可以加载的上一章节ID，可以加载的下一章节ID
     private BookContentAdapter adapter;
     private List<String> titleList;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +63,7 @@ public class ReadActivity extends AppCompatActivity {
     private void init() {
         handler = new Handler();
         biqugeUrl = new BiqugeUrl();
-        titleList=new ArrayList<>();
+        titleList = new ArrayList<>();
         okHttpHelper = OkHttpHelper.getinstance();
         firstEnterId = getIntent().getIntExtra("chapterId", 0);
         biqugeUrl.chapterId = "" + firstEnterId;
@@ -101,24 +98,28 @@ public class ReadActivity extends AppCompatActivity {
                         @Override
                         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                             super.onScrolled(recyclerView, dx, dy);
+                            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                                layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                            }
                             scrollY += dy;
                             Log.e("recyclerView", "onScroll:" + "dy=" + scrollY + " pageHeight=" + pageHeight);
                             if (pageHeight != 0) {
                                 Log.e("设置页数", " ");
+//                                pageSum = recyclerView.getChildAt(layoutManager.findLastVisibleItemPosition()).getHeight() / pageHeight;
                                 tvCount.setText((scrollY / pageHeight + 1) + "/" + pageSum);
                             }
                             tvTime.setText(getLocalTime());
                             if (!recyclerView.canScrollVertically(1)) {
                                 Log.e("滑动判断", "已滑动到底部");
                                 if (bottomId != -1) {
-                                    biqugeUrl.chapterId=""+bottomId;
+                                    biqugeUrl.chapterId = "" + bottomId;
                                     loadNextChapter();
                                 }
                             }
                             if (!recyclerView.canScrollVertically(-1)) {
                                 Log.e("滑动判断", "已滑动到顶部");
                                 if (topId != -1) {
-                                    biqugeUrl.chapterId=""+topId;
+                                    biqugeUrl.chapterId = "" + topId;
                                     loadLastChapter();
                                 }
                             }
@@ -165,9 +166,9 @@ public class ReadActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(Response response, BeanBookContent beanBookContent) {
-                if (beanBookContent.getStatus()==1){
-                    titleList.add(0,beanBookContent.getData().getCname());
-                    topId=beanBookContent.getData().getPid();
+                if (beanBookContent.getStatus() == 1) {
+                    titleList.add(0, beanBookContent.getData().getCname());
+                    topId = beanBookContent.getData().getPid();
                     adapter.insertData(beanBookContent.getData().getContent());
                 }
             }
@@ -196,9 +197,9 @@ public class ReadActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(Response response, BeanBookContent beanBookContent) {
-                if (beanBookContent.getStatus()==1){
+                if (beanBookContent.getStatus() == 1) {
                     titleList.add(beanBookContent.getData().getCname());
-                    bottomId=beanBookContent.getData().getPid();
+                    bottomId = beanBookContent.getData().getPid();
                     adapter.addData(beanBookContent.getData().getContent());
                 }
             }
