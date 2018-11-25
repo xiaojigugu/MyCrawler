@@ -50,6 +50,7 @@ public class ReadActivity extends AppCompatActivity {
     private BookContentAdapter adapter;
     private List<String> titleList;
     private LinearLayoutManager layoutManager;
+    private int currentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,15 @@ public class ReadActivity extends AppCompatActivity {
                             super.onScrolled(recyclerView, dx, dy);
                             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                                 layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                                if (layoutManager.findLastVisibleItemPosition() != currentPosition) {
+                                    currentPosition = layoutManager.findLastVisibleItemPosition();
+                                }
+                                if (layoutManager.findFirstVisibleItemPosition() != currentPosition) {
+                                    currentPosition = layoutManager.findFirstVisibleItemPosition();
+                                }
+                                tvTitle.setText(titleList.get(currentPosition));
                             }
+
                             scrollY += dy;
                             Log.e("recyclerView", "onScroll:" + "dy=" + scrollY + " pageHeight=" + pageHeight);
                             if (pageHeight != 0) {
