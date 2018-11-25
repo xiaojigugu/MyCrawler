@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".fragment.RankingFragment">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/layout_title" />
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="130dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_below="@+id/title"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_man"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:background="@drawable/shape_ranking_selection"
+                android:gravity="center"
+                android:text="男生"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_lady"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="女生" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_hot"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:background="@drawable/shape_ranking_selection"
+                android:gravity="center"
+                android:text="最热"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_commend"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="推荐" />
+
+            <TextView
+                android:id="@+id/tv_over"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="完结" />
+
+            <TextView
+                android:id="@+id/tv_collect"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="收藏" />
+
+            <TextView
+                android:id="@+id/tv_new"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="新书" />
+
+            <TextView
+                android:id="@+id/tv_ranking"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="评分" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_week"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:background="@drawable/shape_ranking_selection"
+                android:gravity="center"
+                android:text="@string/weekRanking"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_month"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="@string/monthRanking" />
+
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="@dimen/ranking_selection_width"
+                android:layout_height="@dimen/ranking_selection_height"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="@string/totalRanking" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        style="@style/Widget.AppCompat.ProgressBar"/>
+</RelativeLayout>

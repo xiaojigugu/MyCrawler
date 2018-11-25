@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="ranking_selection_width">40dp</dimen>
+    <dimen name="ranking_selection_height">30dp</dimen>
+    <dimen name="titleTextSize">20sp</dimen>
+</resources>

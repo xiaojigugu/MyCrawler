@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/jianlai" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_cover"
+        android:layout_alignBottom="@+id/iv_cover"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/tv_ranking"
+        android:layout_toRightOf="@+id/iv_cover"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_bookName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:text="剑来" />
+
+        <TextView
+            android:id="@+id/tv_typeAndAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:text="奇幻玄幻|耳根" />
+
+        <TextView
+            android:id="@+id/tv_synopsis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:lines="2"
+            tools:text="大千世界，无奇不有。 我陈平安，唯有一剑，可搬山，倒海，降妖，镇魔，敕神，摘星，断江，摧城，开天！" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_ranking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:textSize="15sp"
+        tools:text="7.5" />
+</RelativeLayout>

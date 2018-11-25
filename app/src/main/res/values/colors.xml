@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="background">#e7e7e7</color>
+    <color name="unselected">#919191</color>
+    <color name="divider">#cfcfcf</color>
+    <color name="selected">#3fbef4</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="titleBackground">#00abf4</color>
+    <color name="commentName">#0d6a92</color>
+    <color name="directoryActivityBackground">#e2ded7</color>
+    <color name="readBackground">#e6d6b7</color>
+</resources>
