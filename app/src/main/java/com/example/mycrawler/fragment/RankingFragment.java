@@ -3,18 +3,15 @@ package com.example.mycrawler.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,10 +61,8 @@ public class RankingFragment extends Fragment {
     TextView tvMonth;
     @BindView(R.id.tv_total)
     TextView tvTotal;
-    @BindView(R.id.scrollView)
-    NestedScrollView scrollView;
     @BindView(R.id.progressBar)
-    ContentLoadingProgressBar progressBar;
+    ProgressBar progressBar;
     private BiqugeUrl biqugeUrl;
     private String url;
     private RankingAdapter adapter;
@@ -76,12 +71,10 @@ public class RankingFragment extends Fragment {
     private TextView[] textViews3;
     private Intent intent;
     private int index = 1;
-    private Boolean isLoading = false;
+    private Boolean isLoading = true;
     private OkHttpHelper okHttpHelper;
-    private MyHandler myHandler;
     private int endCode = 0;
     private List<BeanRanking.DataBean.BookListBean> bookList;
-    private LinearLayoutManager layoutManager;
     private View view;
 
     public RankingFragment() {
@@ -94,17 +87,19 @@ public class RankingFragment extends Fragment {
                              Bundle savedInstanceState) {
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_ranking, container, false);
+            unbinder = ButterKnife.bind(this, view);
+            init();
+            initData(url, "onCreateView");//默认为 男生-最热
         }
-        unbinder = ButterKnife.bind(this, view);
-        init();
-        initData(url, "onCreateView");//默认为 男生-最热
+        if (unbinder == null) {
+            unbinder = ButterKnife.bind(this, view);
+        }
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     private void init() {
@@ -115,7 +110,6 @@ public class RankingFragment extends Fragment {
         biqugeUrl = new BiqugeUrl();
         url = biqugeUrl.rankingWeek;
         intent = new Intent(getContext(), BookActivity.class);
-        layoutManager = new LinearLayoutManager(getContext());
     }
 
     private void initRecyclerView(final BeanRanking beanRanking) {
@@ -125,15 +119,10 @@ public class RankingFragment extends Fragment {
         } else {
             if (index > 2) {
                 adapter.addData(beanRanking);
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
             } else {
                 adapter.changeData(beanRanking);
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
-                scrollView.scrollTo(0, 0);
             }
         }
     }
@@ -153,26 +142,21 @@ public class RankingFragment extends Fragment {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    View lastChildView = recyclerView.getLayoutManager().getChildAt(recyclerView.getLayoutManager().getChildCount() - 1);
-                    int lastChildBottom = lastChildView.getBottom();
-                    int recyclerBottom = recyclerView.getBottom() - recyclerView.getPaddingBottom();
 
-                    int lastPosition = recyclerView.getLayoutManager().getPosition(lastChildView);
-
-                    if (lastChildBottom == recyclerBottom && lastPosition == recyclerView.getLayoutManager().getItemCount() - 1) {
-                        if (!isLoading) {
-                            if (endCode >= 0) {
-                                initData(biqugeUrl.getRanking(), "OnScrollListener");
-                            }
-                        }
-                    }
-                }
             }
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                Log.e("RankingFragment", "onScrolled");
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (linearLayoutManager != null && linearLayoutManager.findLastVisibleItemPosition() == linearLayoutManager.getItemCount() - 1) {
+                    if (!isLoading) {
+                        if (endCode >= 0) {
+                            initData(biqugeUrl.getRanking(), "OnScrollListener");
+                        }
+                    }
+                }
             }
         });
     }
@@ -253,6 +237,9 @@ public class RankingFragment extends Fragment {
         }
     }
 
+    /**
+     * 设置顶部筛选项的背景
+     */
     public void setSelectionBack(int row, TextView textView) {
         if (row == 1) {
             for (TextView aTextViews1 : textViews1) {
@@ -276,6 +263,7 @@ public class RankingFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        unbinder=null;
     }
 
     private void initData(final String Url, String flag) {
@@ -312,13 +300,7 @@ public class RankingFragment extends Fragment {
                     } else {
                         bookList.addAll(beanRanking.getData().getBookList());
                     }
-                    Message message = new Message();
-                    message.what = 1;
-                    message.obj = beanRanking;
-                    if (myHandler == null) {
-                        myHandler = new MyHandler();
-                    }
-                    myHandler.sendMessage(message);
+                    initRecyclerView(beanRanking);
                 } else {
                     Toast.makeText(getContext(), "数据更新失败...", Toast.LENGTH_SHORT).show();
                 }
@@ -334,16 +316,5 @@ public class RankingFragment extends Fragment {
                 }
             }
         });
-    }
-
-    class MyHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 1) {
-                BeanRanking beanRanking = (BeanRanking) msg.obj;
-                initRecyclerView(beanRanking);
-            }
-        }
     }
 }
