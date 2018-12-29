@@ -26,7 +26,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
     private List<BeanRanking.DataBean.BookListBean> bookList;
 
     public RankingAdapter(Context context, BeanRanking beanRanking, int resId) {
-        Log.e("RankingAdapter","构造方法");
+        Log.e("RankingAdapter", "构造方法");
         this.context = context;
         this.beanRanking = beanRanking;
         this.redId = resId;
@@ -38,13 +38,21 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(redId, null);
-        MyViewHolder viewHolder = new MyViewHolder(view);
-        return viewHolder;
+        return new MyViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
+        if (myViewHolder.getAdapterPosition() == 0) {
+            myViewHolder.firstToThree.setWhich(0, 50);
+        }
+        else if (myViewHolder.getAdapterPosition() == 1) {
+            myViewHolder.firstToThree.setWhich(1, 50);
+        }
+        else if (myViewHolder.getAdapterPosition() == 2) {
+            myViewHolder.firstToThree.setWhich(2, 50);
+        }
         bookList = beanRanking.getData().getBookList();
         String imgName = bookList.get(myViewHolder.getAdapterPosition()).getImg();
         Glide.with(context).load(url.image + imgName).into(myViewHolder.iv_cover);
@@ -69,12 +77,13 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
+        private FirstToThree firstToThree;
         private ImageView iv_cover;
         private TextView tv_bookName, tv_typeAndAuthor, tv_synopsis, tv_ranking;
 
-        public MyViewHolder(@NonNull View itemView) {
+        MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            firstToThree = itemView.findViewById(R.id.iv_firstToThree);
             iv_cover = itemView.findViewById(R.id.iv_cover);
             tv_bookName = itemView.findViewById(R.id.tv_bookName);
             tv_typeAndAuthor = itemView.findViewById(R.id.tv_typeAndAuthor);
@@ -84,14 +93,14 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.MyViewHo
     }
 
     public void changeData(BeanRanking beanRanking) {
-        Log.e("RankingAdapter","changeData");
+        Log.e("RankingAdapter", "changeData");
         bookList.clear();
         this.beanRanking = beanRanking;
         notifyDataSetChanged();
     }
 
     public void addData(BeanRanking beanRanking) {
-        Log.e("RankingAdapter","addData");
+        Log.e("RankingAdapter", "addData");
         bookList.addAll(beanRanking.getData().getBookList());
         notifyDataSetChanged();
     }

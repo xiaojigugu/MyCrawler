@@ -55,7 +55,7 @@ public class BookContentAdapter extends RecyclerView.Adapter<BookContentAdapter.
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.textView);
         }

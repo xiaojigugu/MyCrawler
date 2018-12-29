@@ -37,7 +37,7 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/battery"
+            android:layout_toEndOf="@+id/battery"
             tools:text="下午 11:11" />
 
         <TextView
@@ -45,6 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="250dp"
+            android:layout_toEndOf="@+id/tv_time"
             tools:text="1/7" />
     </RelativeLayout>
 </RelativeLayout>
